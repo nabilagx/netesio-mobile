@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "431916725754",
+    "firebase_url": "https://netes-io-default-rtdb.firebaseio.com",
+    "project_id": "netes-io",
+    "storage_bucket": "netes-io.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431916725754:android:d3fe183990bd76c8412043",
+        "android_client_info": {
+          "package_name": "com.example.netesio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGl0Zxs8ZhHhKQZvb4h6DFE-VGafctwVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -20,13 +20,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool relay1 = false;
   bool relay2 = false;
-  bool buzzer = false;
+
 
   int durasiInkubasi = 0;
   int jadwalRotasi = 0;
   String jenisKelamin = '';
 
-  final List<int> rotasiOptions = [3, 4, 6, 8];
+  final List<int> rotasiOptions = [1, 3, 4, 6, 8];
   final List<String> genderOptions = ['jantan', 'seimbang', 'betina'];
 
   @override
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           jenisKelamin = data['jenis_kelamin'] ?? '';
 
           relay1 = data['status_devices']?['relay1'] ?? false;
-          buzzer = data['status_devices']?['buzzer'] ?? false;
+
           relay2 = data['status']?['relay2'] ?? false;
 
           final rawRiwayat = data['riwayat'] as Map?;
@@ -51,14 +51,17 @@ class _HomeScreenState extends State<HomeScreen> {
             riwayat = rawRiwayat.entries.map((e) {
               final val = Map<String, dynamic>.from(e.value);
               return {
-                'timestamp': int.tryParse(e.key.toString()) ?? 0,
+                'timestamp': val['timestamp'] ?? 0, // ambil dari value, bukan key
                 'suhu': (val['suhu'] ?? 0).toDouble(),
                 'kelembaban': (val['kelembaban'] ?? 0).toDouble(),
               };
             }).toList();
 
+            // Tampilkan data terbaru di atas
             riwayat.sort((a, b) => b['timestamp'].compareTo(a['timestamp']));
+
             if (riwayat.length > 20) riwayat = riwayat.sublist(0, 20);
+
 
             suhuData = [];
             kelembabanData = [];
@@ -90,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
       jenisKelamin = data['jenis_kelamin'] ?? '';
 
       relay1 = data['status_devices']?['relay1'] ?? false;
-      buzzer = data['status_devices']?['buzzer'] ?? false;
+
       relay2 = data['status']?['relay2'] ?? false;
 
       final rawRiwayat = data['riwayat'] as Map?;
@@ -280,7 +283,8 @@ class _HomeScreenState extends State<HomeScreen> {
               options: rotasiOptions,
               selectedValue: jadwalRotasi,
               onSelected: (val) => updateFirebase('jadwal_rotasi', val),
-              label: (val) => '$val jam',
+              label: (val) => val == 1 ? '3 menit' : '$val jam',
+
             ),
             buildOptionChips<String>(
               title: 'Jenis Kelamin Target',
@@ -328,7 +332,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const Divider(),
             buildDeviceStatusCard('Status Relay 1 (Rotasi)', relay1, Icons.autorenew),
             buildDeviceStatusCard('Status Relay 2 (Lampu)', relay2, Icons.lightbulb),
-            buildDeviceStatusCard('Status Buzzer', buzzer, Icons.volume_up),
+
             const Divider(),
             const Text('Riwayat Terbaru', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ...riwayat.map((entry) {
